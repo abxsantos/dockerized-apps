@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Docker based functions
+
+#Python dev container
+pydev() {
+	docker run -it \
+		-v $(pwd):"${HOME}/workspace" \
+		abxsantos/pydev /bin/bash;
+}
+
+# Generate license files easily
+license() {
+	# https://github.com/lord63/choosealicense-cli
+	# $ license -h
+	# $ license generate mit >> LICENSE
+
+	docker run --rm \
+		-v "$(pwd):/workspace" \
+		-v "${HOME}":/root \
+		--disable-content-trust=true \
+		 abxsantos/choosealicensecli \
+		 license $1 $2 --fullname $3 --year $4 --email $5 --project $6;
+}

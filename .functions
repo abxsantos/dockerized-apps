@@ -4,9 +4,10 @@
 
 #Python dev container
 pydev() {
+	# Slim version of python 3.9.0 a clean python environment
 	docker run -it \
 		-v $(pwd):"${HOME}/workspace" \
-		abxsantos/pydev /bin/bash;
+		abxsantos/pydev:latest /bin/bash;
 }
 
 # Generate license files easily
@@ -19,6 +20,16 @@ license() {
 		-v "$(pwd):/workspace" \
 		-v "${HOME}":/root \
 		--disable-content-trust=true \
-		 abxsantos/choosealicensecli \
+		 abxsantos/choosealicensecli:latest \
 		 license $1 $2 --fullname $3 --year $4 --email $5 --project $6;
+}
+
+# A code searching tool similar to ack, with a focus on speed.
+ag() {
+		# https://github.com/ggreer/the_silver_searcher
+		# $ ag test_blah ~/code/
+		docker run --rm \
+			--disable-content-trust=true \
+			-v $(pwd):/tmp \
+       abxsantos/ag:latest $1 $2;
 }

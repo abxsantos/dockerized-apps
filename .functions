@@ -21,7 +21,7 @@ license() {
 		-v "${HOME}":/root \
 		--disable-content-trust=true \
 		 abxsantos/choosealicensecli:latest \
-		 license $1 $2 --fullname $3 --year $4 --email $5 --project $6;
+		 license $1 $2;
 }
 
 # A code searching tool similar to ack, with a focus on speed.

@@ -6,7 +6,6 @@
 #        -t abxsantos/ag:latest \
 #        -f Dockerfile.ag .
 
-
 FROM alpine:latest
 
 MAINTAINER "Alexandre Xavier <ale.bxsantos@gmail.com>"

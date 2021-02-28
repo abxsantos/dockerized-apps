@@ -1,44 +1,29 @@
 # To build the image
-#   export GID=$(id -g)
-#   export UID=$(id -u)
 #    docker build --disable-content-trust=false \
-#        --build-arg USER=$USER \
-#        --build-arg UID=$UID \
-#        --build-arg GID=$GID \
 #        -t abxsantos/ipython .
 
-FROM python:3.9.0-slim
+FROM python:3.9.1-slim
 
 LABEL maintainer "Alexandre Xavier <ale.bxsantos@gmail.com>"
 
-# Set up python dependencies
+ENV SHELL /bin/bash
+
 RUN pip install --upgrade pip \
     && pip install ipython
-
-RUN apt-get update \
-    && apt-get install gnupg2 -y \
-    && apt-get install git -y
 
 # Clean up
 RUN apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up User
-ARG USER=docker
-ARG UID=1000
-ARG GID=1000
-ARG PW=docker
+RUN adduser --disabled-password docker
 
-RUN useradd -m ${USER} --uid=${UID} && echo "${USER}:${PW}" | \
-      chpasswd
+USER docker
 
-USER ${UID}:${GID}
+WORKDIR /home/docker
 
-WORKDIR /home/${USER}/workspace
+ENV PATH="/home/docker/.local/bin:${PATH}"
 
-ENV PYTHONUNBUFFERED 1
-
-ENV SHELL /bin/bash
+COPY --chown=docker:docker . .
 
 CMD ["ipython"]

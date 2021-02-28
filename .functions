@@ -4,11 +4,20 @@
 
 #Python dev container
 pydev() {
-	# Slim version of python 3.9.1 a clean python environment
+	# Slim version of python 3.9.1 with a clean python environment
 	docker run --rm -it \
 		--name pydev \
 		--volume $(pwd):"/home/docker" \
 		abxsantos/pydev:latest /bin/bash;
+}
+
+#Interactive python container
+ipython() {
+	# Slim version of python 3.9.0  running iphython
+	docker run --rm -it \
+		--name iphython \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/ipython:latest;
 }
 
 # Generate license files easily

@@ -1,0 +1,15 @@
+FROM alpine:latest
+
+RUN apk --no-cache update \
+    && apk --no-cache add neovim \
+    && apk --no-cache add sudo
+
+RUN adduser --disabled-password docker
+
+USER docker
+
+WORKDIR /home/docker
+
+ENV PATH="/home/docker/.local/bin:${PATH}"
+
+COPY --chown=docker:docker . .

@@ -4,9 +4,10 @@
 
 #Python dev container
 pydev() {
-	# Slim version of python 3.9.0 a clean python environment
-	docker run -it \
-		-v $(pwd):"${HOME}/workspace" \
+	# Slim version of python 3.9.1 a clean python environment
+	docker run --rm -it \
+		--name pydev \
+		--volume $(pwd):"/home/docker" \
 		abxsantos/pydev:latest /bin/bash;
 }
 
@@ -32,4 +33,12 @@ ag() {
 			--disable-content-trust=true \
 			-v $(pwd):/tmp \
        abxsantos/ag:latest $1 $2;
+}
+
+# Lightbase terminal editor
+nvim(){
+	# $ vim file.txt
+	docker run --rm -it \
+	--volumev $(pwd):/home/docker \
+	abxsantos/nvim nvim $1
 }

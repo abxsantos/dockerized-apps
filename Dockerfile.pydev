@@ -10,6 +10,7 @@ ENV PYTHONUNBUFFERED 1
 
 ENV SHELL /bin/bash
 
+# upgrades pip
 RUN pip install --upgrade pip
 
 # Clean up
@@ -17,12 +18,16 @@ RUN apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+# Creates a non-root user
 RUN adduser --disabled-password docker
 
+# Applies the container user to be non-root
 USER docker
 
 WORKDIR /home/docker
 
+# Sets the binaries to path
 ENV PATH="/home/docker/.local/bin:${PATH}"
 
+# copy in as non-root user, so permissions match what we need
 COPY --chown=docker:docker . .

@@ -51,3 +51,13 @@ nvim(){
 	--volumev $(pwd):/home/docker \
 	abxsantos/nvim nvim $1
 }
+
+
+#Node dev container
+node() {
+	# Slim version of node 15.5.1 with a clean Node environment
+	docker run --rm -it \
+		--name nodejs \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/nodejs:latest /bin/bash;
+}

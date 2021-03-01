@@ -1,0 +1,43 @@
+FROM node:15.5.1-buster
+
+LABEL maintainer "Alexandre Xavier <ale.bxsantos@gmail.com>"
+
+ENV SHELL /bin/bash
+
+# set our node environment, either development or production
+ARG NODE_ENV=production
+ENV NODE_ENV $NODE_ENV
+
+# default to port 3000 for node, and 9229 and 9230 (tests) for debug
+ARG PORT=3000
+ENV PORT $PORT
+EXPOSE $PORT 9229 9230
+
+# install dependencies first, in a different location for easier app bind mounting for local development
+# due to default /opt permissions we have to create the dir with root and change perms
+RUN mkdir /opt/node_app && chown node:node /opt/node_app
+WORKDIR /opt/node_app
+
+# Clean up
+RUN apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# the official node image non-root user
+USER node
+
+# Copies the package.json and package-lock.json if it exists
+COPY Dockerfile.nodejs package.json* package-lock.json* ./
+
+# Install packages and clean cache
+RUN npm install --no-optional \
+    && npm cache clean --force
+
+# Sets the node modules to path
+ENV PATH "/opt/node_app/node_modules/.bin:${PATH}"
+
+
+WORKDIR /opt/node_app/app
+
+# copy in as non-root user, so permissions match what we need
+COPY --chown=node:node . .

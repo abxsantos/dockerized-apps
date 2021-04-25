@@ -1,0 +1,16 @@
+FROM python:alpine
+
+MAINTAINER "Alexandre Xavier <ale.bxsantos@gmail.com>"
+
+# Install latest flake8
+RUN pip install flake8
+
+# Creates a non-root user
+RUN adduser --disabled-password docker
+
+# Applies the container user to be non-root
+USER docker
+
+WORKDIR /home/docker
+
+ENTRYPOINT ["flake8"]

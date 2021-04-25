@@ -1,0 +1,19 @@
+FROM python:alpine
+
+MAINTAINER "Alexandre Xavier <ale.bxsantos@gmail.com>"
+
+# Installs dependencies
+RUN set -eux && apk add --no-cache bc gcc musl-dev
+
+# Install latest black
+RUN pip install black
+
+# Creates a non-root user
+RUN adduser --disabled-password docker
+
+# Applies the container user to be non-root
+USER docker
+
+WORKDIR /home/docker
+
+ENTRYPOINT ["black"]

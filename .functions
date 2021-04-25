@@ -2,7 +2,7 @@
 
 # Docker based functions
 
-#Python dev container
+# Python dev container
 pydev() {
 	# Slim version of python 3.9.1 with a clean python environment
 	docker run --rm -it \
@@ -11,13 +11,67 @@ pydev() {
 		abxsantos/pydev:latest /bin/bash;
 }
 
-#Interactive python container
+# Interactive python container
 ipython() {
 	# Slim version of python 3.9.0  running iphython
 	docker run --rm -it \
 		--name iphython \
 		--volume $(pwd):"/home/docker" \
 		abxsantos/ipython:latest;
+}
+
+# Black formatter dev container
+black() {
+	# Alipne version of python 3.9.4 with black
+	docker run --rm \
+		--name black \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/black:latest $*;
+}
+
+# Isort formatter dev container
+isort() {
+	# Alipne version of python 3.9.4 with isort
+	docker run --rm \
+		--name isort \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/isort:latest $*;
+}
+
+# autoflake type checker dev container
+autoflake() {
+	# Alipne version of python 3.9.4 with autoflake
+	docker run --rm \
+		--name autoflake \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/autoflake:latest $*;
+}
+
+# mypy type checker dev container
+mypy() {
+	# Alipne version of python 3.9.4 with mypy
+	docker run --rm \
+		--name mypy \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/mypy:latest $*;
+}
+
+# flake8 type checker dev container
+flake8() {
+	# Alipne version of python 3.9.4 with flake8
+	docker run --rm \
+		--name flake8 \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/flake8:latest $*;
+}
+
+# pydocstyle type checker dev container
+pydocstyle() {
+	# Alipne version of python 3.9.4 with flake8
+	docker run --rm \
+		--name pydocstyle \
+		--volume $(pwd):"/home/docker" \
+		abxsantos/pydocstyle:latest $*;
 }
 
 # Generate license files easily
@@ -31,7 +85,7 @@ license() {
 		-v "${HOME}":/root \
 		--disable-content-trust=true \
 		 abxsantos/choosealicensecli:latest \
-		 license $1 $2;
+		 license $*;
 }
 
 # A code searching tool similar to ack, with a focus on speed.
@@ -41,17 +95,16 @@ ag() {
 		docker run --rm \
 			--disable-content-trust=true \
 			-v $(pwd):/tmp \
-       abxsantos/ag:latest $1 $2;
+       abxsantos/ag:latest $*;
 }
 
 # Lightbase terminal editor
 nvim(){
 	# $ vim file.txt
 	docker run --rm -it \
-	--volumev $(pwd):/home/docker \
-	abxsantos/nvim nvim $1
+	--volume $(pwd):/home/docker \
+	abxsantos/nvim nvim $*;
 }
-
 
 #Node dev container
 node() {

@@ -2,7 +2,7 @@
 #    docker build --disable-content-trust=true \
 #        -t abxsantos/pydev .
 
-FROM python:3.9.1-slim
+FROM python:latest
 
 LABEL maintainer "Alexandre Xavier <ale.bxsantos@gmail.com>"
 

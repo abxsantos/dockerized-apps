@@ -1,0 +1,15 @@
+FROM python:alpine
+
+MAINTAINER "Alexandre Xavier <ale.bxsantos@gmail.com>"
+
+RUN pip install isort
+
+# Creates a non-root user
+RUN adduser --disabled-password docker
+
+# Applies the container user to be non-root
+USER docker
+
+WORKDIR /home/docker
+
+ENTRYPOINT ["isort"]

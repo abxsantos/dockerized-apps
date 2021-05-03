@@ -1,0 +1,60 @@
+FROM alpine:latest
+
+MAINTAINER "<Alexandre Xavier <ale.bxsantos@gmail.com>"
+
+ENV LANG en_US.UTF-8
+
+ENV PYENV_ROOT="/.pyenv" \
+    PATH="/.pyenv/bin:/.pyenv/shims:$PATH"
+
+RUN apk add --no-cache \
+        bzip2-dev \
+        coreutils \
+        dpkg-dev \
+        dpkg \
+        expat-dev \
+        findutils \
+        gcc \
+        gdbm-dev \
+        libc-dev \
+        libffi-dev \
+        libnsl-dev \
+        libtirpc-dev \
+        linux-headers \
+        make \
+        ncurses-dev \
+        openssl-dev \
+        pax-utils \
+        readline-dev \
+        sqlite-dev \
+        tcl-dev \
+        tk \
+        tk-dev \
+        util-linux-dev \
+        xz-dev \
+        zlib-dev \
+        ca-certificates \
+        cargo \
+        git \
+        curl \
+        bash
+
+RUN curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
+
+ARG PYTHON_VERSIONS='3.9.4 3.8.5 3.7.5 3.6.9'
+
+RUN pyenv update \
+    && echo $PYTHON_VERSIONS | xargs --verbose -P 4 -n 1 pyenv install \
+    && pyenv global $(pyenv versions --bare) \
+    && find $PYENV_ROOT/versions -type d '(' -name '__pycache__' -o -name 'test' -o -name 'tests' ')' -exec rm -rfv '{}' + \
+    && find $PYENV_ROOT/versions -type f '(' -name '*.py[co]' -o -name '*.exe' ')' -exec rm -fv '{}' +
+
+RUN pyenv local 3.7.5 && \
+    python -m pip install -U pip && \
+    python -m pip install tox && \
+    pyenv local --unset && \
+    pyenv rehash
+
+WORKDIR /app
+
+ENTRYPOINT ["tox"]

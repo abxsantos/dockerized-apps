@@ -74,6 +74,15 @@ pydocstyle() {
 		abxsantos/pydocstyle:latest $*;
 }
 
+# Python tox test runner container
+multitox() {
+	# Container with 3.9.4, 3.8.5, 3.7.5 and 3.6.9 python interpreter versions
+	docker run --rm \
+		--name multi-tox \
+		--volume $(pwd):"/app" \
+		abxsantos/multi-tox:latest $*;
+}
+
 # Generate license files easily
 license() {
 	# https://github.com/lord63/choosealicense-cli

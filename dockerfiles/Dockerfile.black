@@ -8,8 +8,10 @@ RUN set -eux && apk add --no-cache bc gcc musl-dev
 # Install latest black
 RUN pip install black
 
+ARG USER_ID=1000
+
 # Creates a non-root user
-RUN adduser --disabled-password docker
+RUN adduser --disabled-password --gecos '' --uid ${USER_ID} docker
 
 # Applies the container user to be non-root
 USER docker

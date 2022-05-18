@@ -5,8 +5,10 @@ MAINTAINER "Alexandre Xavier <ale.bxsantos@gmail.com>"
 # Install latest autoflake
 RUN pip install autoflake
 
+ARG USER_ID=1000
+
 # Creates a non-root user
-RUN adduser --disabled-password docker
+RUN adduser --disabled-password --gecos '' --uid ${USER_ID} docker
 
 # Applies the container user to be non-root
 USER docker
